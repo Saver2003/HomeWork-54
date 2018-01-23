@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
 import './App.css';
 import Card from './Card/Card';
+import {  } from './combination';
+import CardCombination from './combination'
 
 const suits = ['H', 'C', 'D', 'S'];
 const ranks = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
 
 class App extends Component {
     state = {
-        cards: []
+        cards: [],
+        combination: 'Nothing'
     };
 
     getCards = () => {
@@ -24,18 +27,27 @@ class App extends Component {
         for (let c = 0; c < 5; c++) {
             let randomCardIndex = Math.floor(Math.random() * deck.length);
             let [randomCard] = deck.splice(randomCardIndex, 1);
-            cards.push(randomCard)
+            cards.push(randomCard);
         }
 
-        
+        // const cards = [{suit: 'C', rank: '2'}, {suit: 'H', rank: '5'},
+        //     {suit: 'C', rank: '2'}, {suit: 'C', rank: '5'}, {suit: 'C', rank: '5'}];
 
-        this.setState({cards});
+        // const combination = getCombination(cards);
+        // console.log(combination, 'combination');
 
+
+        let win = new CardCombination(cards);
+
+        const combination = win.getBestHand();
+        this.setState({cards, combination});
+        console.log(combination);
     };
+
 
   render() {
     return (
-      <div className="App playingCards faceImages">
+      <div className="App playingCards faceImages cards">
           <div><button onClick={this.getCards}>Get Cards</button></div>
           <ul className="table">
               {
@@ -48,6 +60,7 @@ class App extends Component {
                   })
               }
           </ul>
+          <div>Комбинация: {this.state.combination}</div>
       </div>
     );
   }
